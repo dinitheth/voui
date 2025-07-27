@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, forwardRef, useImperativeHandle } from "react";
 import { useFrame } from "@react-three/fiber";
 import { useGLTF, useKeyboardControls } from "@react-three/drei";
 import * as THREE from "three";
@@ -12,8 +12,11 @@ interface SpaceshipProps {
   selectedModel: string;
 }
 
-export default function Spaceship({ id, position, isPlayer, health, selectedModel }: SpaceshipProps) {
+const Spaceship = forwardRef<THREE.Group, SpaceshipProps>(({ id, position, isPlayer, health, selectedModel }, ref) => {
   const groupRef = useRef<THREE.Group>(null);
+  
+  // Expose the group ref to parent components
+  useImperativeHandle(ref, () => groupRef.current!, []);
   
   // Use GLB models instead of GLTF
   let scene;
@@ -126,7 +129,11 @@ export default function Spaceship({ id, position, isPlayer, health, selectedMode
       )}
     </group>
   );
-}
+});
+
+Spaceship.displayName = 'Spaceship';
+
+export default Spaceship;
 
 // Preload spaceship models (GLB format)
 useGLTF.preload('/models/Spaceships/fighter.glb');

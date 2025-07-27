@@ -41,6 +41,9 @@ export default function GameScene({ gameState }: GameSceneProps) {
 
   return (
     <group ref={groupRef}>
+      {/* Camera Controller */}
+      <CameraController targetRef={playerRef} offset={[0, 8, 15]} />
+      
       {/* Lighting */}
       <ambientLight intensity={0.3} />
       <directionalLight
@@ -57,6 +60,7 @@ export default function GameScene({ gameState }: GameSceneProps) {
 
       {/* Player Spaceship */}
       <Spaceship
+        ref={playerRef}
         id="player"
         position={[0, 0, 0]}
         isPlayer={true}
