@@ -3,6 +3,7 @@ import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import Spaceship from "./Spaceship";
 import SpaceEnvironment from "./SpaceEnvironment";
+import CameraController from "./CameraController";
 import { useCollision } from "../../hooks/useCollision";
 
 interface GameSceneProps {
@@ -11,6 +12,7 @@ interface GameSceneProps {
 
 export default function GameScene({ gameState }: GameSceneProps) {
   const groupRef = useRef<THREE.Group>(null);
+  const playerRef = useRef<THREE.Group>(null);
   const { checkCollisions } = useCollision();
 
   // Generate some enemy spaceships for the demo
