@@ -17,22 +17,24 @@ export function useSpaceship(id: string) {
   });
 
   const updateMovement = useCallback((keys: any, delta: number) => {
-    const speed = 15;
-    const rotationSpeed = 2;
+    const speed = 50; // Increased speed significantly
+    const rotationSpeed = 3;
     const boostMultiplier = keys.boost ? 2 : 1;
 
-    // Reset velocity
-    velocity.multiplyScalar(0.95); // Add some drag
+    // Apply lighter drag
+    velocity.multiplyScalar(0.98); // Reduced drag for better movement
 
     // Forward/Backward movement
     if (keys.forward) {
       velocity.z -= speed * delta * boostMultiplier;
+      console.log("FORWARD pressed - velocity.z:", velocity.z);
       if (audioRef.current && audioRef.current.paused) {
         audioRef.current.play().catch(() => {});
       }
     }
     if (keys.backward) {
       velocity.z += speed * delta * 0.5;
+      console.log("BACKWARD pressed - velocity.z:", velocity.z);
     }
 
     // Left/Right rotation

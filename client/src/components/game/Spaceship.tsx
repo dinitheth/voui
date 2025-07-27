@@ -42,14 +42,10 @@ export default function Spaceship({ id, position, isPlayer, health, selectedMode
       // Handle player input
       const keys = getKeys();
       
-      // Log controls for debugging
-      if (keys.forward || keys.backward || keys.left || keys.right) {
-        console.log("Player controls:", {
-          forward: keys.forward,
-          backward: keys.backward,
-          left: keys.left,
-          right: keys.right
-        });
+      // Log controls for debugging - show all keys being pressed
+      const pressedKeys = Object.keys(keys).filter(key => keys[key]);
+      if (pressedKeys.length > 0) {
+        console.log("Keys pressed:", pressedKeys, keys);
       }
 
       // Update movement based on input
@@ -66,9 +62,14 @@ export default function Spaceship({ id, position, isPlayer, health, selectedMode
       groupRef.current.position.z += Math.cos(time + parseInt(id.split('-')[1])) * 0.005;
     }
 
-    // Apply velocity and rotation
-    groupRef.current.position.add(velocity.clone().multiplyScalar(delta));
+    // Apply velocity and rotation (velocity already includes delta from updateMovement)
+    groupRef.current.position.add(velocity);
     groupRef.current.rotation.set(rotation.x, rotation.y, rotation.z);
+    
+    // Debug position
+    if (isPlayer && (velocity.x !== 0 || velocity.y !== 0 || velocity.z !== 0)) {
+      console.log("Player position:", groupRef.current.position.toArray());
+    }
 
     // Health-based visual effects
     if (health < 50) {
